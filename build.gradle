@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // spring data jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // spring test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // spring security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // devtools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // sqlite db
+    runtimeOnly 'org.xerial:sqlite-jdbc:3.41.2.2'
+    runtimeOnly 'org.hibernate.orm:hibernate-community-dialects:6.2.4.Final'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}
+
+compileJava {
+    options.compilerArgs.addAll(['-parameters', '-Xlint:unchecked'])
+    options.debug = true
+    options.encoding = 'UTF-8'
+}
