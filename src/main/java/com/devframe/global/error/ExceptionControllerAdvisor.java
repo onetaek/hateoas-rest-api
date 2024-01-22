@@ -1,6 +1,6 @@
 package com.devframe.global.error;
 
-import com.devframe.global.common.dto.response.CustomResponseEntity;
+import com.devframe.global.common.hateaos.CustomResponseEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +40,8 @@ public class ExceptionControllerAdvisor {
         return CustomResponseEntity.of(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BaseException.class)
-    public CustomResponseEntity<CustomErrorResponse> rollBackException(BaseException e) throws IOException {
+    @ExceptionHandler(BasicException.class)
+    public CustomResponseEntity<CustomErrorResponse> rollBackException(BasicException e) throws IOException {
         if (isAjaxRequest(httpServletRequest)) {
             HttpStatus httpStatus = e.getHttpStatus();
             CustomErrorResponse body = CustomErrorResponse.builder()
@@ -62,7 +62,7 @@ public class ExceptionControllerAdvisor {
         CustomErrorResponse body = CustomErrorResponse.builder()
                 .httpStatus(httpStatus)
                 .code(httpStatus.value())
-                .message(String.format("관리자에게 문의하세요. %s",e.getMessage()))
+                .message(String.format("관리자에게 문의하세요.\n%s",e.getMessage()))
                 .build();
         return CustomResponseEntity.of(body, httpStatus);
     }
