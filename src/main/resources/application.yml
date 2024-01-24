@@ -12,3 +12,8 @@ spring:
 
   jwt:
     secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
+
+frame:
+  web:
+    host: http://localhost:8080
+    show-host: true
