@@ -4,25 +4,43 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-public class CustomResponseEntity<T> extends ResponseEntity<T> {
+public class CustomResponseEntity extends ResponseEntity<CustomResponseBody> {
 
-    public CustomResponseEntity(T body, HttpStatusCode status) {
+    public CustomResponseEntity(HttpStatusCode status) {
+        super(status);
+    }
+
+    public CustomResponseEntity(CustomResponseBody body, HttpStatusCode status) {
         super(body, status);
     }
 
-    public static <T> CustomResponseEntity<T> of(T body, HttpStatus httpStatus) {
-        return new CustomResponseEntity<>(body, httpStatus);
+    public static CustomResponseEntity of(HttpStatus httpStatus) {
+        return new CustomResponseEntity(httpStatus);
     }
 
-    public static <T> CustomResponseEntity<T> ok(T data) {
+    public static CustomResponseEntity of(CustomResponseBody body, HttpStatus httpStatus) {
+        return new CustomResponseEntity(body, httpStatus);
+    }
+
+    public static CustomResponseEntity succeeded(CustomResponseBody data) {
         return of(data, HttpStatus.OK);
     }
 
-    public static <T> CustomResponseEntity<T> created(T data) {
+    public static CustomResponseEntity created(CustomResponseBody data) {
         return of(data, HttpStatus.CREATED);
     }
 
-    public static <T> CustomResponseEntity<T> noContent(T data) {
-        return of(data, HttpStatus.NO_CONTENT);
+    public static CustomResponseEntity error(CustomResponseBody data, HttpStatus httpStatus) {
+        return of(data, httpStatus);
+    }
+
+    public CustomResponseEntity addLink(LinkProxy linkProxy) {
+        super.getBody().addLink(linkProxy);
+        return this;
+    }
+
+    public CustomResponseEntity addLinks(LinkProxy... linkProxies) {
+        super.getBody().addLinks(linkProxies);
+        return this;
     }
 }

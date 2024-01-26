@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-@ControllerAdvice
+//@ControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionControllerAdvisor {
 
@@ -25,7 +24,7 @@ public class ExceptionControllerAdvisor {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public CustomResponseEntity<CustomErrorResponse> invalidRequestHandler(MethodArgumentNotValidException e) {
+    public CustomResponseEntity invalidRequestHandler(MethodArgumentNotValidException e) {
         CustomErrorResponse response = CustomErrorResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .code(HttpStatus.BAD_REQUEST.value())
@@ -37,11 +36,11 @@ public class ExceptionControllerAdvisor {
             response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
         });
 
-        return CustomResponseEntity.of(response, HttpStatus.BAD_REQUEST);
+        return CustomResponseEntity.error(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BasicException.class)
-    public CustomResponseEntity<CustomErrorResponse> rollBackException(BasicException e) throws IOException {
+    public CustomResponseEntity rollBackException(BasicException e) throws IOException {
         if (isAjaxRequest(httpServletRequest)) {
             HttpStatus httpStatus = e.getHttpStatus();
             CustomErrorResponse body = CustomErrorResponse.builder()
@@ -49,7 +48,7 @@ public class ExceptionControllerAdvisor {
                     .code(httpStatus.value())
                     .message(e.getMessage())
                     .build();
-            return CustomResponseEntity.of(body, httpStatus);
+            return CustomResponseEntity.error(body, httpStatus);
         } else {
             httpServletResponse.sendError(e.getHttpStatus().value());
             return null;
@@ -57,14 +56,14 @@ public class ExceptionControllerAdvisor {
     }
 
     @ExceptionHandler(Exception.class)
-    public CustomResponseEntity<CustomErrorResponse> unProcessableException(Exception e) {
+    public CustomResponseEntity unProcessableException(Exception e) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         CustomErrorResponse body = CustomErrorResponse.builder()
                 .httpStatus(httpStatus)
                 .code(httpStatus.value())
                 .message(String.format("관리자에게 문의하세요.\n%s",e.getMessage()))
                 .build();
-        return CustomResponseEntity.of(body, httpStatus);
+        return CustomResponseEntity.error(body, httpStatus);
     }
 
     private boolean isAjaxRequest(HttpServletRequest request) {
