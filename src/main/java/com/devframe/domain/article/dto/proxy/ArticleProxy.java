@@ -2,9 +2,11 @@ package com.devframe.domain.article.dto.proxy;
 
 import com.devframe.domain.article.entity.Article;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Builder
 public class ArticleProxy {
     private Long id;
@@ -21,6 +23,7 @@ public class ArticleProxy {
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
+                .writer(entity.getWriter())
                 .views(entity.getViews())
                 .createdTime(entity.getCreatedTime())
                 .modifiedTime(entity.getModifiedTime())

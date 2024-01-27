@@ -11,8 +11,8 @@ import org.hibernate.annotations.Where;
 @Builder
 @Getter
 @Entity
-@SQLDelete(sql = "UPDATE comments SET deleted = 1, deleted_on = CURRENT_TIMESTAMP WHERE id = ?")
-@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE comment SET is_deleted = 1, deleted_time = CURRENT_TIMESTAMP WHERE id = ?")
+@Where(clause = "is_deleted = false")
 public class Comment extends BasicEntity {
 
     @Id

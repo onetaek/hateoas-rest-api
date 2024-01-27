@@ -11,8 +11,8 @@ import org.hibernate.annotations.Where;
 @Builder
 @Getter
 @Entity
-@SQLDelete(sql = "UPDATE articles SET deleted = 1, deleted_on = CURRENT_TIMESTAMP WHERE id = ?")
-@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE article SET is_deleted = 1, deleted_time = CURRENT_TIMESTAMP WHERE id = ?")
+@Where(clause = "is_deleted = false")
 public class Article extends BasicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +33,11 @@ public class Article extends BasicEntity {
     public Article update(String title, String content) {
         this.title = title;
         this.content = content;
+        return this;
+    }
+
+    public Article plusViews() {
+        this.views++;
         return this;
     }
 }
