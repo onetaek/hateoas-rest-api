@@ -1,5 +1,6 @@
 package com.devframe.domain.comment.entity;
 
+import com.devframe.domain.article.entity.Article;
 import com.devframe.global.common.entity.BasicEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +28,9 @@ public class Comment extends BasicEntity {
 
     @Column(nullable = false, length = 20)
     private String writer;
+
+    @ManyToOne
+    private Article article;
 
     public Comment update(String title, String content) {
         this.title = title;

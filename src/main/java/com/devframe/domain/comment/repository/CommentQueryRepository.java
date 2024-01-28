@@ -29,4 +29,9 @@ public class CommentQueryRepository {
                 .fetch();
     }
 
+    public List<Comment> findAllByArticleId(Long articleId) {
+//        return jpaQueryFactory.selectFrom(comment)
+//                .where();
+        return null;
+    }
 }

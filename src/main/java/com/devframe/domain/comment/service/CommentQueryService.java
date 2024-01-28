@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +22,15 @@ public class CommentQueryService {
         );
     }
 
+    public List<CommentProxy> findAllByArticleId(Long articleId) {
+        return commentQueryRepository.findAllByArticleId(articleId).stream()
+                .map(CommentProxy::fromEntity)
+                .toList();
+    }
+
     public List<CommentProxy> findAll() {
         return commentQueryRepository.findAll().stream()
                 .map(CommentProxy::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Collectors;
-
 import static com.devframe.domain.article.controller.ArticleController.REQUEST_URI;
 
 @Controller
@@ -29,10 +27,12 @@ public class ArticleController {
 
     @GetMapping
     public CustomResponseEntity findAll() {
-        return CustomResponse.succeeded(articleQueryService.findAll().stream()
-                .map(ArticleResponse::fromProxy)
-                .map(response -> response.addLinks(LinkBuilder.crud(REQUEST_URI, response.getId())))
-                .collect(Collectors.toList())).addLink(LinkBuilder.self(REQUEST_URI, "article list"));
+        return CustomResponse.succeeded(
+                articleQueryService.findAll().stream()
+                        .map(ArticleResponse::fromProxy)
+                        .map(response -> response.addLinks(LinkBuilder.crud(REQUEST_URI, response.getId())))
+                        .toList()
+        ).addLink(LinkBuilder.self(REQUEST_URI, "article list"));
     }
 
     @GetMapping("/{id}")
