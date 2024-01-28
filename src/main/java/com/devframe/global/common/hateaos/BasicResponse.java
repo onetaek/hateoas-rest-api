@@ -3,9 +3,10 @@ package com.devframe.global.common.hateaos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * HttpMediaTypeNotAcceptableException
@@ -25,13 +26,23 @@ public class BasicResponse {
         this.id = id;
     }
 
-    public void addLink(LinkProxy linkProxy) {
-        this._links = Map.of(linkProxy.getValue(), linkProxy.getLink());
+    public BasicResponse addLink(LinkProxy linkProxy) {
+        if (this._links == null || this._links.isEmpty()) {
+            this._links = new HashMap<>(Map.of(linkProxy.getValue(), linkProxy.getLink()));
+        } else {
+            this._links.put(linkProxy.getValue(), linkProxy.getLink());
+        }
+        return this;
     }
 
     public BasicResponse addLinks(LinkProxy... links) {
-        this._links = Stream.of(links)
-                .collect(Collectors.toMap(LinkProxy::getValue, LinkProxy::getLink));
+        if (this._links == null || this._links.isEmpty()) {
+            this._links = Arrays.stream(links)
+                    .collect(Collectors.toMap(LinkProxy::getValue, LinkProxy::getLink));
+        } else {
+            Arrays.stream(links)
+                    .forEach(linkProxy -> this._links.put(linkProxy.getValue(), linkProxy.getLink()));
+        }
         return this;
     }
 }

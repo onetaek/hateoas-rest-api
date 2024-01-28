@@ -23,13 +23,15 @@ public class CommentQueryService {
     }
 
     public List<CommentProxy> findAllByArticleId(Long articleId) {
-        return commentQueryRepository.findAllByArticleId(articleId).stream()
+        return commentQueryRepository.findAllByArticleId(articleId)
+                .stream()
                 .map(CommentProxy::fromEntity)
                 .toList();
     }
 
     public List<CommentProxy> findAll() {
-        return commentQueryRepository.findAll().stream()
+        return commentQueryRepository.findAll()
+                .stream()
                 .map(CommentProxy::fromEntity)
                 .toList();
     }

@@ -1,21 +1,16 @@
 package com.devframe.domain.comment.controller;
 
-import com.devframe.domain.comment.dto.proxy.CommentProxy;
+import com.devframe.domain.comment.dto.CommentCreateRequest;
+import com.devframe.domain.comment.dto.CommentUpdateRequest;
 import com.devframe.domain.comment.dto.response.CommentResponse;
 import com.devframe.domain.comment.service.CommentCommandService;
 import com.devframe.domain.comment.service.CommentQueryService;
-import com.devframe.global.common.hateaos.BasicResponse;
 import com.devframe.global.common.hateaos.CustomResponse;
 import com.devframe.global.common.hateaos.CustomResponseEntity;
 import com.devframe.global.common.hateaos.LinkBuilder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import static com.devframe.domain.comment.controller.CommentController.REQUEST_URI;
 
@@ -32,19 +27,50 @@ public class CommentController {
 
     @GetMapping
     public CustomResponseEntity findAllByArticleId(@PathVariable Long articleId) {
-        List<CommentProxy> all = commentQueryService.findAllByArticleId(articleId);
-        List<BasicResponse> collect = all.stream()
-                .map(CommentResponse::fromProxy)
-                .map(response ->
-                        response.addLinks(LinkBuilder.crud("/articles/" + articleId + "/comments", response.getId()))
-                ).toList();
-        CustomResponseEntity commentList = CustomResponse.succeeded(collect).addLink(LinkBuilder.self("comment list"));
-        return commentList;
+        return CustomResponse.succeeded(
+                commentQueryService.findAllByArticleId(articleId).stream()
+                        .map(CommentResponse::fromProxy)
+                        .map(response -> response.addLinks(
+                                LinkBuilder.crud("/articles/" + articleId + "/comments", response.getId()))
+                        ).toList()
+                ).addLinks(
+                        LinkBuilder.self("/articles/" + articleId + "/comments"),
+                        LinkBuilder.create("/articles/" + articleId + "/comments")
+                );
     }
 
-    @GetMapping
-    public CustomResponseEntity findById() {
+    @GetMapping("/{id}")
+    public CustomResponseEntity findById(@PathVariable Long articleId, @PathVariable Long id) {
+        return CustomResponse.succeeded(
+                CommentResponse.fromProxy(
+                        commentQueryService.findById(id)
+                ).addLinks(LinkBuilder.crud("/articles/" + articleId + "/comments", id)));
+    }
 
+    @PostMapping
+    public CustomResponseEntity create(@PathVariable Long articleId,
+                                       @Validated @RequestBody CommentCreateRequest request) {
+        CommentResponse commentResponse = CommentResponse.fromProxy(
+                commentCommandService.create(articleId, CommentCreateRequest.toServiceRequest(request)));
+        return CustomResponse.succeeded(
+                commentResponse.addLinks(
+                        LinkBuilder.self("/articles/" + articleId + "/comments/" + commentResponse.getId())
+                )
+        );
+    }
+
+    @PatchMapping("/{id}")
+    public CustomResponseEntity update(@PathVariable Long articleId, @PathVariable Long id,
+                                       @Validated @RequestBody CommentUpdateRequest request) {
+        return CustomResponse.succeeded(CommentResponse.fromProxy(
+                commentCommandService.update(id, CommentUpdateRequest.toServiceRequest(request)))
+                .addLinks(LinkBuilder.self("/articles/" + articleId + "/comments/" + id)));
+    }
+
+    @DeleteMapping("/{id}")
+    public CustomResponseEntity delete(@PathVariable Long articleId, @PathVariable Long id) {
+        commentCommandService.delete(id);
+        return CustomResponse.noContent();
     }
 
 }

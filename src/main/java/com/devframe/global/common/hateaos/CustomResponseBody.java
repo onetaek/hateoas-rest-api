@@ -2,9 +2,8 @@ package com.devframe.global.common.hateaos;
 
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 public class CustomResponseBody {
@@ -16,12 +15,22 @@ public class CustomResponseBody {
         this.succeeded = succeeded;
     }
 
+
+
     public void addLink(LinkProxy linkProxy) {
-        this._links = Map.of(linkProxy.getValue(), linkProxy.getLink());
+        if (this._links == null || this._links.isEmpty()) {
+            this._links = new HashMap<>(Map.of(linkProxy.getValue(), linkProxy.getLink()));
+        } else {
+            this._links.put(linkProxy.getValue(), linkProxy.getLink());
+        }
     }
 
     public void addLinks(LinkProxy... links) {
-        this._links = Stream.of(links)
-                .collect(Collectors.toMap(LinkProxy::getValue, LinkProxy::getLink));
+        if (this._links == null || this._links.isEmpty()) {
+            this._links = new HashMap<>();
+        }
+        for (LinkProxy linkProxy : links) {
+            this._links.put(linkProxy.getValue(), linkProxy.getLink());
+        }
     }
 }

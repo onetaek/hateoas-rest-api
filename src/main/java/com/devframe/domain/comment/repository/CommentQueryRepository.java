@@ -1,6 +1,7 @@
 package com.devframe.domain.comment.repository;
 
 import com.devframe.domain.comment.entity.Comment;
+import com.devframe.domain.comment.repository.expression.CommentBooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class CommentQueryRepository {
     }
 
     public List<Comment> findAllByArticleId(Long articleId) {
-//        return jpaQueryFactory.selectFrom(comment)
-//                .where();
-        return null;
+        return jpaQueryFactory.selectFrom(comment)
+                .where(CommentBooleanExpression.eqArticleId(articleId))
+                .fetch();
     }
 }

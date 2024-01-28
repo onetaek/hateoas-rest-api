@@ -25,6 +25,10 @@ public class LinkBuilder {
         showHost = showHostValue;
     }
 
+    public static LinkProxy of(String value ,String uri) {
+        return LinkProxy.of(value, Link.of(handleUrl(uri) , HttpMethod.GET, MediaType.APPLICATION_JSON_VALUE));
+    }
+
     public static LinkProxy of(String value ,String uri, HttpMethod httpMethod) {
         return LinkProxy.of(value, Link.of(handleUrl(uri) , httpMethod, MediaType.APPLICATION_JSON_VALUE));
     }

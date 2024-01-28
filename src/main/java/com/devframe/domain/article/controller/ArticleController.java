@@ -8,6 +8,7 @@ import com.devframe.domain.article.service.ArticleQueryService;
 import com.devframe.global.common.hateaos.CustomResponse;
 import com.devframe.global.common.hateaos.CustomResponseEntity;
 import com.devframe.global.common.hateaos.LinkBuilder;
+import com.devframe.global.common.hateaos.LinkProxy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +31,13 @@ public class ArticleController {
         return CustomResponse.succeeded(
                 articleQueryService.findAll().stream()
                         .map(ArticleResponse::fromProxy)
-                        .map(response -> response.addLinks(LinkBuilder.crud(REQUEST_URI, response.getId())))
+                        .peek(response -> {
+                            LinkProxy[] crudLinks = LinkBuilder.crud(REQUEST_URI, response.getId());
+                            String commentsUri = String.format("%s/%s/comments", REQUEST_URI, response.getId());
+                            LinkProxy commentsLink = LinkBuilder.of("comments", commentsUri);
+                            response.addLinks(commentsLink);
+                            response.addLinks(crudLinks);
+                        })
                         .toList()
         ).addLink(LinkBuilder.self(REQUEST_URI, "article list"));
     }

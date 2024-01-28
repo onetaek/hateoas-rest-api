@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
+
 public class CustomResponseEntity extends ResponseEntity<CustomResponseBody> {
 
     public CustomResponseEntity(HttpStatusCode status) {
@@ -35,12 +37,12 @@ public class CustomResponseEntity extends ResponseEntity<CustomResponseBody> {
     }
 
     public CustomResponseEntity addLink(LinkProxy linkProxy) {
-        super.getBody().addLink(linkProxy);
+        Objects.requireNonNull(super.getBody()).addLink(linkProxy);
         return this;
     }
 
     public CustomResponseEntity addLinks(LinkProxy... linkProxies) {
-        super.getBody().addLinks(linkProxies);
+        Objects.requireNonNull(super.getBody()).addLinks(linkProxies);
         return this;
     }
 }
