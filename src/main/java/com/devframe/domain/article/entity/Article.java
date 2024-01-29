@@ -24,7 +24,7 @@ public class Article extends BasicEntity {
     @Column(nullable = false, length = 2000)
     private String content;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String writer;
 
     @Builder.Default

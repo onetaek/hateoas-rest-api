@@ -13,6 +13,4 @@ public class CustomSingleResponseBody extends CustomResponseBody {
         super(true);
         this.content = content;
     }
-
-
 }
