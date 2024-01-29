@@ -70,7 +70,7 @@ $ ./gradlew complieJava
 └── global
      ├── common
      │    ├── entity : auditing을 사용하는 공통 객체를 저장하는 패키지
-     │    └── hateoas : Roy. T. Fielding이 말하는 REST API 설계원칙을 구현한 코드
+     │    └── hateoas : Roy. T. Fielding이 말하는 REST API 설계원칙을 구현한 코드 ⭐️
      ├── config : 환경설정을 위한 패키지
      └── error : 공통 예외처리를 위한 클래스가 있는 패지키
 ```
@@ -88,7 +88,7 @@ $ ./gradlew complieJava
 
 ## 주요 코드(공통 영역) 📌
 ### ResponseEntity를 상속받는 CustomResponseEntity
-- springframework에서 제공하는 ResponseEntity를 상속받아 만든 객체로 Body객체로 CustomResponseBody를 받도록 개발하였습니다. 
+- springframework에서 제공하는 ResponseEntity를 상속받아 만든 객체로 응답 Body로 CustomResponseBody를 받도록 개발하였습니다. 
 ```java
 public class CustomResponseEntity extends ResponseEntity<CustomResponseBody> {
 
@@ -127,7 +127,7 @@ public class CustomResponseBody {
 }
 ```
 ### 단일건 응답 객체
-- BasicResponse를 content로 가지는 응답으로 BasicResponse(뒤에서 추가설명)는 DB에서 가져온 데이터에서 links정보를 추가할 수 있도록하는 객체입니다.
+- BasicResponse를 content로 가지는 단일건에 대한 응답객체로 BasicResponse(뒤에서 추가설명)는 DB에서 가져온 데이터에서 hypermedia정보를 추가할 수 있도록하는 객체입니다.
 ```java
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -188,7 +188,7 @@ public class CustomErrorResponse extends CustomResponseBody {
 ```
 
 ### BasicResponse
-- DB에서 가져온 데이터에서 links 정보를 담을 수 있게 해주는 객체로 모든 응답 객체는 BasicResponse를 상속 받아 구현되야 하도록 설계 되었습니다.
+- DB에서 가져온 데이터에서 s 정보를 담을 수 있게 해주는 객체로 모든 응답 객체는 BasicResponse를 상속 받아 구현되야 하도록 설계 되었습니다.
 ```java
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -637,9 +637,66 @@ public CustomResponseEntity findAllByArticleId(@PathVariable Long articleId) {
 }
 ```
 ## 개선할 점 🛠️
-- BasicResponse를 상속 받아야 REST API를 구현할 수 있도록 코드를 구현하여 Spring data jpa에서 제공하는 Paging객체를 사용하기에 어려움이 있어서 직접 페이징에 대한 객체도 구현해야합니다.
-- hypermedia정보 이외에 추가적으로 응답 값에 대한 명세 또는 생성, 수정시 필요한 컬럼 등에 대한 정보도 담을 수 있는 기능을 추가하여 응답 값 만 보고 API에 대한 모든 정보를 판단할 수 있도록 추가 기능이 필요합니다.
-- contentType을 현재는 application/json을 주로 사용중인데 HAL, UBER, Collection+json 등의 다양한 하이퍼링크를 표현하는 방법을 정의한 명세를 활용하면 좋을 것 같습니다.
+- Paging 객체 구현: BasicResponse를 상속받아 REST API를 구현하기 위해 코드를 구현하였지만, Spring Data JPA에서 제공하는 Paging 객체를 사용하기 어려워 직접 페이징에 대한 객체를 구현해야 합니다.
+- 응답 값 명세 확장: hypermedia 정보 외에도 응답 값에 대한 명세를 추가하는 기능이 필요합니다. 생성 및 수정 시 필요한 컬럼 등의 정보를 동적으로 담을 수 있도록 응답 값에 대한 확장 기능이 필요합니다.
+- 다양한 contentType 활용: 현재는 application/json을 주로 사용하고 있지만, HAL, UBER, Collection+json 등과 같은 다양한 하이퍼링크를 표현하는 방법을 정의한 명세를 활용하여 contentType을 다양화하는 기능이 추가되면 좋을 것 같습니다.
 
-## 개선할 점 ✏️
-- 
+## 배운 점 ✏️
+- 프로젝트를 통해 REST API에 대한 HATEOAS 설계 원칙 및 Roy T. Fielding의 REST API 개념에 대한 이해를 증진시켰습니다.
+- BasicResponse를 상속하는 코드를 구현하고 이를 제네릭을 활용한 객체로 발전시킴으로써 제네릭에 대한 이해를 높였습니다.
+- hypermedia 정보 외에도 응답 값에 대한 명세와 생성, 수정 시 필요한 컬럼 정보를 동적으로 추가할 수 있는 기능의 필요성을 깨닫고, API의 모든 정보를 판단할 수 있도록 확장 기능에 대한 이해를 키웠습니다.
+- 다양한 contentType을 활용하여 하이퍼링크를 표현하는 방법에 대한 명세를 참고하고, 이를 통해 웹 API의 다양한 표현 방식에 대한 이해를 확장했습니다.
+
+## 발생한 에러 및 어려움 💣
+
+### com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.springframework.http.HttpMethod and no properties discovered to create BeanSerializer
+- Jackson 라이브러리가 HttpMethod클래스를 직렬화할 때 해당 클래스에 대한 Serializer를 찾지 못하는 것이 원인
+- 아래 코드와 같이 HttpMethod를 직렬화할 수 있도록 @Bean에 등록하여 해결
+```java
+// HttpMethod를 직렬화할 수 있는 Serializer를 생성
+@Component
+public class HttpMethodSerializer extends JsonSerializer<HttpMethod> {
+    @Override
+    public void serialize(HttpMethod value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeString(value.name());
+    }
+}
+```
+```java
+// 생성한 Serializer를 ObjectMapper에 추가
+@Component
+public class WebMvcConfig {
+
+    @Bean
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder, HttpMethodSerializer httpMethodSerializer) {
+        ObjectMapper objectMapper = builder.build();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(HttpMethod.class, httpMethodSerializer);
+        objectMapper.registerModule(module);
+        return objectMapper;
+    }
+}
+```
+
+### HttpMediaTypeNotAcceptableException
+- 핸들러가 클라이언트가 요청한 Type으로 응답을 내려줄 수 없는 것이 원인 이었습니다.
+- CustomResponse에 @Getter를 추가하여 해결하였습니다.
+
+### Name for argument of type not specified, and parameter name information not available via reflection
+- @RequestParam에서 웹 요청 파라미터 명을 생략하는 코딩 방법은 항상 가능한게 아니고, 콘트롤러코드가 debug 모드로 컴파일 될 경우에만 가능한 것이 원인
+- 아래 코드를 추가하고, setting > gradle > Build and run using 을 Gradle로 수정하니 해결
+```bash
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}
+
+compileJava {
+    options.compilerArgs.addAll(['-parameters', '-Xlint:unchecked'])
+    options.debug = true
+    options.encoding = 'UTF-8'
+}
+```
+
+## 참고자료 📖
+- https://spring.io/projects/spring-hateoas
+- https://www.youtube.com/watch?v=RP_f5dMoHFc
