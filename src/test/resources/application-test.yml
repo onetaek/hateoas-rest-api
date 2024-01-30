@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: test
   h2:
     console:
       path: /h2-console
@@ -14,15 +17,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true
+
   sql:
     init:
-      mode: always
+      mode: never
 
 frame:
   web:
