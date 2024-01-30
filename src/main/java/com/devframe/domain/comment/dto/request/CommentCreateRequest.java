@@ -1,6 +1,5 @@
-package com.devframe.domain.comment.dto;
+package com.devframe.domain.comment.dto.request;
 
-import com.devframe.domain.comment.dto.request.CommentServiceCreateRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 

@@ -30,9 +30,10 @@ public class Article extends BasicEntity {
     @Builder.Default
     private Long views = 0L;
 
-    public Article update(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public Article update(String title, String content, String writer) {
+        if (title != null) this.title = title;
+        if (content != null) this.content = content;
+        if (writer != null) this.writer = writer;
         return this;
     }
 

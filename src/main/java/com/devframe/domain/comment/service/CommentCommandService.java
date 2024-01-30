@@ -37,7 +37,8 @@ public class CommentCommandService {
         return CommentProxy.fromEntity(
                 updateTarget.update(
                         request.getTitle(),
-                        request.getContent()
+                        request.getContent(),
+                        request.getWriter()
                 )
         );
     }

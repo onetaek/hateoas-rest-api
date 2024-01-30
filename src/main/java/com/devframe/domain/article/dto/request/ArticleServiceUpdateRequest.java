@@ -8,4 +8,5 @@ import lombok.Getter;
 public class ArticleServiceUpdateRequest {
     private String title;
     private String content;
+    private String writer;
 }

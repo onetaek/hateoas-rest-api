@@ -1,7 +1,7 @@
 package com.devframe.domain.comment.controller;
 
-import com.devframe.domain.comment.dto.CommentCreateRequest;
-import com.devframe.domain.comment.dto.CommentUpdateRequest;
+import com.devframe.domain.comment.dto.request.CommentCreateRequest;
+import com.devframe.domain.comment.dto.request.CommentUpdateRequest;
 import com.devframe.domain.comment.dto.response.CommentResponse;
 import com.devframe.domain.comment.service.CommentCommandService;
 import com.devframe.domain.comment.service.CommentQueryService;

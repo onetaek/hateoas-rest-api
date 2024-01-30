@@ -32,9 +32,10 @@ public class Comment extends BasicEntity {
     @ManyToOne
     private Article article;
 
-    public Comment update(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public Comment update(String title, String content, String writer) {
+        if (title != null) this.title = title;
+        if (content != null) this.content = content;
+        if (writer != null) this.writer = writer;
         return this;
     }
 }

@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CommentServiceCreateRequest {
-
     private String title;
     private String content;
     private String writer;

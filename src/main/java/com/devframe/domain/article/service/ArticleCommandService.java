@@ -32,7 +32,8 @@ public class ArticleCommandService {
         return ArticleProxy.fromEntity(
                 updateTarget.update(
                         request.getTitle(),
-                        request.getContent()
+                        request.getContent(),
+                        request.getWriter()
                 )
         );
     }

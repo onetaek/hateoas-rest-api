@@ -1,21 +1,18 @@
-package com.devframe.domain.comment.dto;
+package com.devframe.domain.comment.dto.request;
 
-import com.devframe.domain.comment.dto.request.CommentServiceUpdateRequest;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
 public class CommentUpdateRequest {
-
-    @NotBlank
     private String title;
-    @NotBlank
     private String content;
+    private String writer;
 
     public static CommentServiceUpdateRequest toServiceRequest(CommentUpdateRequest request) {
         return CommentServiceUpdateRequest.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
+                .writer(request.getWriter())
                 .build();
     }
 
