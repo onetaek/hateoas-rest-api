@@ -1,9 +1,11 @@
 package com.devframe.domain.article.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class ArticleCreateRequest {
     @NotBlank
     private String title;
