@@ -29,7 +29,7 @@ class ArticleQueryServiceTest {
     private ArticleCommandRepository articleCommandRepository;
 
     @AfterEach
-    void afterEach() {
+    void tearDown() {
         articleCommandRepository.deleteAllInBatch();
     }
 

@@ -15,11 +15,6 @@ import static com.devframe.common.EntityCreator.createArticle;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
-/**
- * DataJpaTest 는 SpringBooTest 보다 가볍지만 사용하는 것을 선호하지 않는다.
- */
-//@DataJpaTest
-
 @SpringBootTest
 @ActiveProfiles("test")
 class ArticleQueryRepositoryTest {
@@ -30,7 +25,7 @@ class ArticleQueryRepositoryTest {
     private ArticleCommandRepository articleCommandRepository;
 
     @AfterEach
-    void afterEach() {
+    void tearDown() {
         articleCommandRepository.deleteAllInBatch();
     }
 
@@ -55,7 +50,7 @@ class ArticleQueryRepositoryTest {
 
     @DisplayName("게시글 3개를 저장 후 모든 게시글을 조회한다.")
     @Test
-    void test() {
+    void findAll() {
         //given
         Article article1 = createArticle("title1", "content1", "writer1");
         Article article2 = createArticle("title2", "content2", "writer2");
