@@ -1,5 +1,15 @@
+[[article-read]]
+=== 게시글 조회
+
+==== HTTP Request
+include::{snippets}/article-read/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/article-read/http-response.adoc[]
+include::{snippets}/article-read/response-fields.adoc[]
+
 [[article-create]]
-=== 신규 상품 등록
+=== 게시글 등록
 
 ==== HTTP Request
 include::{snippets}/article-create/http-request.adoc[]
@@ -8,3 +18,23 @@ include::{snippets}/article-create/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/article-create/http-response.adoc[]
 include::{snippets}/article-create/response-fields.adoc[]
+
+[[article-update]]
+=== 게시글 수정
+
+==== HTTP Request
+include::{snippets}/article-update/http-request.adoc[]
+include::{snippets}/article-update/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/article-update/http-response.adoc[]
+include::{snippets}/article-update/response-fields.adoc[]
+
+[[article-delete]]
+=== 게시글 삭제
+
+==== HTTP Request
+include::{snippets}/article-delete/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/article-delete/http-response.adoc[]
