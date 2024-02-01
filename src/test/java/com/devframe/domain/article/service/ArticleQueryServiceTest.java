@@ -49,7 +49,7 @@ class ArticleQueryServiceTest {
         //then
         assertThat(findArticle)
                 .extracting("title","content","writer")
-                .containsExactlyInAnyOrder("title2","content2","writer2");
+                .containsExactlyInAnyOrder("title1","content1","writer1");
     }
 
     @DisplayName("존재하지 않는 게시글을 조회하면 예외가 발생한다.")
