@@ -16,3 +16,5 @@ include::api/article.adoc[]
 
 [[Comment-API]]
 == Comment API
+
+include::api/comment.adoc[]

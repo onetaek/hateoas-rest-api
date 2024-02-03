@@ -52,7 +52,7 @@ public class CommentController {
                                        @Validated @RequestBody CommentCreateRequest request) {
         CommentResponse commentResponse = CommentResponse.fromProxy(
                 commentCommandService.create(articleId, CommentCreateRequest.toServiceRequest(request)));
-        return CustomResponse.succeeded(
+        return CustomResponse.created(
                 commentResponse.addLinks(
                         LinkBuilder.self("/articles/" + articleId + "/comments/" + commentResponse.getId())
                 )

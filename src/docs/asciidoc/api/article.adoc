@@ -3,6 +3,7 @@
 
 ==== HTTP Request
 include::{snippets}/article-read/http-request.adoc[]
+include::{snippets}/article-read/path-parameters.adoc[]
 
 ==== HTTP Response
 include::{snippets}/article-read/http-response.adoc[]
@@ -24,6 +25,7 @@ include::{snippets}/article-create/response-fields.adoc[]
 
 ==== HTTP Request
 include::{snippets}/article-update/http-request.adoc[]
+include::{snippets}/article-update/path-parameters.adoc[]
 include::{snippets}/article-update/request-fields.adoc[]
 
 ==== HTTP Response
@@ -35,6 +37,7 @@ include::{snippets}/article-update/response-fields.adoc[]
 
 ==== HTTP Request
 include::{snippets}/article-delete/http-request.adoc[]
+include::{snippets}/article-delete/path-parameters.adoc[]
 
 ==== HTTP Response
 include::{snippets}/article-delete/http-response.adoc[]
