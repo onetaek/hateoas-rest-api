@@ -13,6 +13,9 @@
 - Spring에서 제공하는 HATEOAS 라이브러리는 있지만, 컨트롤러 단의 코드가 지저분하게 느껴져 직접 Roy. T. Fielding이 제시한 REST API 원칙을 따라 구현해보기로 결정했습니다.
 - 이 프로젝트에서는 주로 HATEOAS 원칙과 self-descriptive을 중점적으로 다루며, 게시글과 댓글의 간단한 도메인을 통해 실제 구현을 진행합니다.
 
+## Spring REST Docs로 만든 REST API문서 경로 📌
+https://onetaek.github.io/devFrame/src/main/resources/static/docs/
+
 ## 시작 가이드 📌
 ### Requirements
 For building and running the application you need:
@@ -636,6 +639,7 @@ public CustomResponseEntity findAllByArticleId(@PathVariable Long articleId) {
     "size": 2
 }
 ```
+
 ## 개선할 점 🛠️
 - Paging 객체 구현: BasicResponse를 상속받아 REST API를 구현하기 위해 코드를 구현하였지만, Spring Data JPA에서 제공하는 Paging 객체를 사용하기 어려워 직접 페이징에 대한 객체를 구현해야 합니다.
 - 응답 값 명세 확장: hypermedia 정보 외에도 응답 값에 대한 명세를 추가하는 기능이 필요합니다. 생성 및 수정 시 필요한 컬럼 등의 정보를 동적으로 담을 수 있도록 응답 값에 대한 확장 기능이 필요합니다.
@@ -646,6 +650,9 @@ public CustomResponseEntity findAllByArticleId(@PathVariable Long articleId) {
 - BasicResponse를 상속하는 코드를 구현하고 이를 제네릭을 활용한 객체로 발전시킴으로써 제네릭에 대한 이해를 높였습니다.
 - hypermedia 정보 외에도 응답 값에 대한 명세와 생성, 수정 시 필요한 컬럼 정보를 동적으로 추가할 수 있는 기능의 필요성을 깨닫고, API의 모든 정보를 판단할 수 있도록 확장 기능에 대한 이해를 키웠습니다.
 - 다양한 contentType을 활용하여 하이퍼링크를 표현하는 방법에 대한 명세를 참고하고, 이를 통해 웹 API의 다양한 표현 방식에 대한 이해를 확장했습니다.
+- domain영역에서 구현한 모든 메서드에 대해서 테스트코드를 작성하며 안정성과 신뢰성 높은 코드를 개발하기 위해서 테스트코드가 꼭 필요하다는 점을 느꼈습니다.
+- Spring REST Docs를 사용하여 API문서를 만들며 API를 한눈에 파악하기 위해서는 문서화하는 과정이 꼭필요하다는 것을 느꼈습니다.
+
 
 ## 발생한 에러 및 어려움 💣
 
