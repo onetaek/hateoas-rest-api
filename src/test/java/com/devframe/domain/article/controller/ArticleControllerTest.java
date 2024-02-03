@@ -43,7 +43,7 @@ class ArticleControllerTest {
 
     @AfterEach
     void tearDown() {
-        articleCommandRepository.deleteAllInBatch();
+        articleCommandRepository.deleteAll();
     }
 
     @DisplayName("게시글 단건을 조회한다.")

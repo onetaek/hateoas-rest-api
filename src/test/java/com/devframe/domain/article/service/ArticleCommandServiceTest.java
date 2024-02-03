@@ -32,7 +32,7 @@ class ArticleCommandServiceTest {
 
     @AfterEach
     void tearDown() {
-        articleCommandRepository.deleteAllInBatch();
+        articleCommandRepository.deleteAll();
     }
 
     @DisplayName("게시글을 생성한다. 전체 게시글의 개수는 1개이고 내용이 작성했을 때와 일치한다.")

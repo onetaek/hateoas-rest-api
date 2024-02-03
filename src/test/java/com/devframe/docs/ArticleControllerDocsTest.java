@@ -1,4 +1,4 @@
-package com.devframe.docs.article;
+package com.devframe.docs;
 
 import com.devframe.common.RestDocsConfiguration;
 import com.devframe.domain.article.dto.request.ArticleCreateRequest;

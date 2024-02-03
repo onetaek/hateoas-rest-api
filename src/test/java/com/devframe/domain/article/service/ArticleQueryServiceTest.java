@@ -30,7 +30,7 @@ class ArticleQueryServiceTest {
 
     @AfterEach
     void tearDown() {
-        articleCommandRepository.deleteAllInBatch();
+        articleCommandRepository.deleteAll();
     }
 
     @DisplayName("게시글을 하나를 조회한다.")

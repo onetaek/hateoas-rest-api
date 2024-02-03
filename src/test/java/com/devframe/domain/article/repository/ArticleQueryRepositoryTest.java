@@ -26,7 +26,7 @@ class ArticleQueryRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        articleCommandRepository.deleteAllInBatch();
+        articleCommandRepository.deleteAll();
     }
 
     @DisplayName("게시글 2개 저장 후 하나의 게시글의 id로 조회한다.")
