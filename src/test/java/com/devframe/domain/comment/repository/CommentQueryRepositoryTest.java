@@ -2,7 +2,6 @@ package com.devframe.domain.comment.repository;
 
 import com.devframe.domain.article.entity.Article;
 import com.devframe.domain.article.repository.ArticleCommandRepository;
-import com.devframe.domain.article.repository.ArticleQueryRepository;
 import com.devframe.domain.comment.entity.Comment;
 import com.devframe.domain.comment.exception.CommentException;
 import org.junit.jupiter.api.AfterEach;
@@ -28,15 +27,13 @@ class CommentQueryRepositoryTest {
     @Autowired
     private CommentCommandRepository commentCommandRepository;
     @Autowired
-    private ArticleQueryRepository articleQueryRepository;
-    @Autowired
     private ArticleCommandRepository articleCommandRepository;
 //    Referential integrity constraint violation: "FK5YX0UPHGJC6IK6HB82KKW501Y: PUBLIC.COMMENT FOREIGN KEY(ARTICLE_ID) REFERENCES PUBLIC.ARTICLE(ID) (CAST(1 AS BIGINT))"; SQL statement:
 //    delete from article where (article.is_deleted = false) [23503-224]
     @AfterEach
     void tearDown() {
-        commentCommandRepository.deleteAllInBatch();
-        articleCommandRepository.deleteAllInBatch();
+        commentCommandRepository.deleteAll();
+        articleCommandRepository.deleteAll();
     }
 
     @DisplayName("댓글을 단건으로 조회한다.")

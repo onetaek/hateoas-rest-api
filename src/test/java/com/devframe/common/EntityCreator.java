@@ -1,6 +1,7 @@
 package com.devframe.common;
 
 import com.devframe.domain.article.entity.Article;
+import com.devframe.domain.comment.entity.Comment;
 
 public class EntityCreator {
 
@@ -12,4 +13,12 @@ public class EntityCreator {
                 .build();
     }
 
+    public static Comment createComment(String title, String content, String writer, Article article) {
+        return Comment.builder()
+                .title(title)
+                .content(content)
+                .writer(writer)
+                .article(article)
+                .build();
+    }
 }
