@@ -44,50 +44,49 @@ public class ArticleControllerDocsTest {
     @Autowired
     private ArticleCommandRepository articleCommandRepository;
 
-    @DisplayName("게시글 단일건 조회 API")
+    @DisplayName("게시글 단일 조회 API")
     @Test
     void findById() throws Exception {
         //given
-        Article article = createArticle("title1", "content1", "writer1");
+        Article article = createArticle("제목1", "내용1", "작성자1");
         Article savedArticle = articleCommandRepository.save(article);
 
         //when //then
-        mockMvc.perform(get("/articles/{id}",savedArticle.getId())
+        mockMvc.perform(get("/articles/{id}", savedArticle.getId())
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("article-read",
                         pathParameters(
-                            parameterWithName("id").description("게시글 ID")
+                                parameterWithName("id").description("게시글 식별자")
                         ),
                         responseFields(
-                                fieldWithPath("succeeded").description("Whether the request succeeded or not"),
-                                fieldWithPath("content.id").description("The ID of the article"),
-                                fieldWithPath("content._links.self.href").description("The self link of the article"),
-                                fieldWithPath("content._links.create.href").description("The create link of the article"),
-                                fieldWithPath("content._links.update.href").description("The update link of the article"),
-                                fieldWithPath("content._links.delete.href").description("The delete link of the article"),
-                                fieldWithPath("content._links.self.httpMethod").description("HTTP method for self link"),
-                                fieldWithPath("content._links.self.mediaType").description("Media type for self link"),
-                                fieldWithPath("content._links.self.description").description("Description for self link"),
-                                fieldWithPath("content._links.create.httpMethod").description("HTTP method for create link"),
-                                fieldWithPath("content._links.create.mediaType").description("Media type for create link"),
-                                fieldWithPath("content._links.create.description").description("Description for create link"),
-                                fieldWithPath("content._links.update.httpMethod").description("HTTP method for update link"),
-                                fieldWithPath("content._links.update.mediaType").description("Media type for update link"),
-                                fieldWithPath("content._links.update.description").description("Description for update link"),
-                                fieldWithPath("content._links.delete.httpMethod").description("HTTP method for delete link"),
-                                fieldWithPath("content._links.delete.mediaType").description("Media type for delete link"),
-                                fieldWithPath("content._links.delete.description").description("Description for delete link"),
-                                fieldWithPath("content.title").description("The title of the article"),
-                                fieldWithPath("content.content").description("The content of the article"),
-                                fieldWithPath("content.writer").description("The writer of the article"),
-                                fieldWithPath("content.views").description("The number of views of the article"),
-                                fieldWithPath("content.createdTime").description("The creation time of the article"),
-                                fieldWithPath("content.modifiedTime").description("The modification time of the article")
+                                fieldWithPath("succeeded").description("요청 성공 여부"),
+                                fieldWithPath("content.id").description("게시글 식별자"),
+                                fieldWithPath("content._links.self.href").description("게시글 자기 참조 링크"),
+                                fieldWithPath("content._links.create.href").description("게시글 생성 링크"),
+                                fieldWithPath("content._links.update.href").description("게시글 수정 링크"),
+                                fieldWithPath("content._links.delete.href").description("게시글 삭제 링크"),
+                                fieldWithPath("content._links.self.httpMethod").description("자기 참조 링크의 HTTP 메서드"),
+                                fieldWithPath("content._links.self.mediaType").description("자기 참조 링크의 미디어 타입"),
+                                fieldWithPath("content._links.self.description").description("자기 참조 링크 설명"),
+                                fieldWithPath("content._links.create.httpMethod").description("생성 링크의 HTTP 메서드"),
+                                fieldWithPath("content._links.create.mediaType").description("생성 링크의 미디어 타입"),
+                                fieldWithPath("content._links.create.description").description("생성 링크 설명"),
+                                fieldWithPath("content._links.update.httpMethod").description("수정 링크의 HTTP 메서드"),
+                                fieldWithPath("content._links.update.mediaType").description("수정 링크의 미디어 타입"),
+                                fieldWithPath("content._links.update.description").description("수정 링크 설명"),
+                                fieldWithPath("content._links.delete.httpMethod").description("삭제 링크의 HTTP 메서드"),
+                                fieldWithPath("content._links.delete.mediaType").description("삭제 링크의 미디어 타입"),
+                                fieldWithPath("content._links.delete.description").description("삭제 링크 설명"),
+                                fieldWithPath("content.title").description("게시글 제목"),
+                                fieldWithPath("content.content").description("게시글 내용"),
+                                fieldWithPath("content.writer").description("게시글 작성자"),
+                                fieldWithPath("content.views").description("게시글 조회 수"),
+                                fieldWithPath("content.createdTime").description("게시글 작성 시간"),
+                                fieldWithPath("content.modifiedTime").description("게시글 수정 시간")
                         )
                 ));
-
     }
 
     @DisplayName("게시글 등록 API")
