@@ -1,18 +1,24 @@
 package com.devframe.domain.article.controller;
 
+import com.devframe.domain.article.dto.proxy.ArticleProxy;
+import com.devframe.domain.article.dto.request.ArticleBatchCreateRequest;
 import com.devframe.domain.article.dto.request.ArticleCreateRequest;
 import com.devframe.domain.article.dto.request.ArticleUpdateRequest;
 import com.devframe.domain.article.dto.response.ArticleResponse;
 import com.devframe.domain.article.service.ArticleCommandService;
 import com.devframe.domain.article.service.ArticleQueryService;
+import com.devframe.global.aop.ListValid;
 import com.devframe.global.common.hateaos.CustomResponse;
 import com.devframe.global.common.hateaos.CustomResponseEntity;
 import com.devframe.global.common.hateaos.LinkBuilder;
 import com.devframe.global.common.hateaos.LinkProxy;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.devframe.domain.article.controller.ArticleController.REQUEST_URI;
 
@@ -57,6 +63,49 @@ public class ArticleController {
                 articleCommandService.create(ArticleCreateRequest.toServiceRequest(request)));
         return CustomResponse.created(articleResponse)
                 .addLink(LinkBuilder.self(REQUEST_URI + "/" + articleResponse.getId()));
+    }
+
+    @ListValid
+    @PostMapping("/batch")
+    public CustomResponseEntity createBatch(@RequestBody List<ArticleCreateRequest> requests) {
+        List<ArticleProxy> articleProxies = articleCommandService.createBatch(requests
+                .stream()
+                .map(ArticleCreateRequest::toServiceRequest)
+                .toList());
+        List<ArticleResponse> articleResponse = articleProxies
+                .stream()
+                .map(ArticleResponse::fromProxy)
+                .toList();
+        return CustomResponse.succeeded(articleResponse);
+    }
+
+    @PostMapping("/batch2")
+    public CustomResponseEntity createBatch2(@RequestBody List<ArticleCreateRequest> requests) {
+        List<ArticleProxy> articleProxies = articleCommandService.createBatch(requests
+                .stream()
+                .map(ArticleCreateRequest::toServiceRequest)
+                .toList());
+        List<ArticleResponse> articleResponse = articleProxies
+                .stream()
+                .map(ArticleResponse::fromProxy)
+                .toList();
+        return CustomResponse.succeeded(articleResponse);
+    }
+
+    /**
+     * spring validation 이 동작하는 케이스
+     */
+    @PostMapping("/batch3")
+    public CustomResponseEntity createBatch3(@Valid @RequestBody ArticleBatchCreateRequest request) {
+        List<ArticleProxy> articleProxies = articleCommandService.createBatch(request.getBody()
+                .stream()
+                .map(ArticleCreateRequest::toServiceRequest)
+                .toList());
+        List<ArticleResponse> articleResponse = articleProxies
+                .stream()
+                .map(ArticleResponse::fromProxy)
+                .toList();
+        return CustomResponse.succeeded(articleResponse);
     }
 
     @PatchMapping("/{id}")

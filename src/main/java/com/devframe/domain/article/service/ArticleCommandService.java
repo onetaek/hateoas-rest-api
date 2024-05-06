@@ -1,6 +1,7 @@
 package com.devframe.domain.article.service;
 
 import com.devframe.domain.article.dto.proxy.ArticleProxy;
+import com.devframe.domain.article.dto.request.ArticleCreateRequest;
 import com.devframe.domain.article.dto.request.ArticleServiceCreateRequest;
 import com.devframe.domain.article.dto.request.ArticleServiceUpdateRequest;
 import com.devframe.domain.article.entity.Article;
@@ -10,6 +11,9 @@ import com.devframe.domain.article.repository.ArticleQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,6 +29,12 @@ public class ArticleCommandService {
                         ArticleServiceCreateRequest.toEntity(request)
                 )
         );
+    }
+
+    public List<ArticleProxy> createBatch(List<ArticleServiceCreateRequest> requests) {
+        return requests.stream()
+                .map(this::create)
+                .toList();
     }
 
     public ArticleProxy update(Long id,ArticleServiceUpdateRequest request) {
