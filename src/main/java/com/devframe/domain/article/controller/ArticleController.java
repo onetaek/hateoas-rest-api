@@ -7,7 +7,6 @@ import com.devframe.domain.article.dto.request.ArticleUpdateRequest;
 import com.devframe.domain.article.dto.response.ArticleResponse;
 import com.devframe.domain.article.service.ArticleCommandService;
 import com.devframe.domain.article.service.ArticleQueryService;
-import com.devframe.global.aop.ListValid;
 import com.devframe.global.common.hateaos.CustomResponse;
 import com.devframe.global.common.hateaos.CustomResponseEntity;
 import com.devframe.global.common.hateaos.LinkBuilder;
@@ -57,6 +56,11 @@ public class ArticleController {
         );
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     */
     @PostMapping
     public CustomResponseEntity create(@Validated @RequestBody ArticleCreateRequest request) {
         ArticleResponse articleResponse = ArticleResponse.fromProxy(
@@ -65,22 +69,11 @@ public class ArticleController {
                 .addLink(LinkBuilder.self(REQUEST_URI + "/" + articleResponse.getId()));
     }
 
-    @ListValid
+    /**
+     * Advice를 통해 List를 객체로 한번더 감싸서 컬랙션형태의 객체를 유효성 체크하는 케이스
+     */
     @PostMapping("/batch")
-    public CustomResponseEntity createBatch(@RequestBody List<ArticleCreateRequest> requests) {
-        List<ArticleProxy> articleProxies = articleCommandService.createBatch(requests
-                .stream()
-                .map(ArticleCreateRequest::toServiceRequest)
-                .toList());
-        List<ArticleResponse> articleResponse = articleProxies
-                .stream()
-                .map(ArticleResponse::fromProxy)
-                .toList();
-        return CustomResponse.succeeded(articleResponse);
-    }
-
-    @PostMapping("/batch2")
-    public CustomResponseEntity createBatch2(@RequestBody List<ArticleCreateRequest> requests) {
+    public CustomResponseEntity createBatch(@Valid @RequestBody List<ArticleCreateRequest> requests) {
         List<ArticleProxy> articleProxies = articleCommandService.createBatch(requests
                 .stream()
                 .map(ArticleCreateRequest::toServiceRequest)
@@ -93,9 +86,9 @@ public class ArticleController {
     }
 
     /**
-     * spring validation 이 동작하는 케이스
+     * List를 객체로 한번 더 감싸서 컬랙션형태의 객체를 유효성 체크하는 케이스
      */
-    @PostMapping("/batch3")
+    @PostMapping("/batch2")
     public CustomResponseEntity createBatch3(@Valid @RequestBody ArticleBatchCreateRequest request) {
         List<ArticleProxy> articleProxies = articleCommandService.createBatch(request.getBody()
                 .stream()
